@@ -28,6 +28,7 @@
 #import "ViewController.h"
 #import "KYHollowCircle.h"
 #import "KYCircleProgress.h"
+#import "KYAnimCircle.h"
 
 @interface ViewController ()
 
@@ -35,6 +36,8 @@
 @property (strong, nonatomic) KYCircleProgress *circleProgress; //进度条环形圆
 @property (strong, nonatomic) UILabel *percentLabel;            //百分比
 @property (strong, nonatomic) UIView *progressView;             //进度条视图
+@property (strong, nonatomic) UIButton *animViewBtn;            //动画视图
+
 
 
 @end
@@ -51,6 +54,16 @@
   
   //绘制一个进度条环形视图
   [self showProgressView];
+  
+  //动画视图
+  _animViewBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+   _animViewBtn.frame = CGRectMake(40,220, 150, 150);
+  [_animViewBtn adjustsImageWhenHighlighted];
+  [_animViewBtn adjustsImageWhenDisabled];
+  _animViewBtn.backgroundColor = [UIColor blackColor];
+  _animViewBtn.imageView.contentMode = UIViewContentModeCenter;
+  [_animViewBtn addTarget:self action:@selector(onClickAnimViewBtn:) forControlEvents:UIControlEventTouchUpInside];
+  [self.view addSubview:_animViewBtn];
 }
 
 -(void)showProgressView {
@@ -98,5 +111,17 @@
   _percentLabel.text = [NSString stringWithFormat:@"%.0f%%",slider.value*100];
 }
 
+#pragma mark - 点击动画视图
+
+-(void)onClickAnimViewBtn:(UIButton *)sender{
+   
+   KYAnimCircle *animCircle = [[KYAnimCircle alloc] initWithFrame:sender.bounds];
+   animCircle.userInteractionEnabled = YES;
+   [animCircle animateWithDuration:3.0 completeBlock:^(BOOL finished) {
+       
+       NSLog(@"动画执行完成了");
+   }];
+   [sender addSubview:animCircle];
+}
 
 @end
