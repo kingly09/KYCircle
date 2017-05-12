@@ -58,13 +58,13 @@
   //进度条视图 
   _progressView = [[UIView alloc] init];
   _progressView.backgroundColor = [UIColor blackColor];
-  _progressView.frame = CGRectMake(160, 40, 100, 150);
+  _progressView.frame = CGRectMake(160, 40, 150, 150);
   [self.view addSubview:_progressView];
   
   
   CGFloat margin = 15.0f;
   CGFloat circleWidth = _progressView.bounds.size.width - 2*margin;
-  CGRect  frame =   CGRectMake(15, 40, circleWidth, circleWidth);
+  CGRect  frame =   CGRectMake(15, 15, circleWidth, circleWidth);
   //百分号Label
   _percentLabel  = [[UILabel alloc] initWithFrame:frame];
   _percentLabel.textColor = [UIColor whiteColor];
