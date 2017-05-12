@@ -116,7 +116,7 @@
 -(void)onClickAnimViewBtn:(UIButton *)sender{
    
    KYAnimCircle *animCircle = [[KYAnimCircle alloc] initWithFrame:sender.bounds];
-   animCircle.backgroundColor = [UIColor whiteColor];
+   animCircle.backgroundColor = [UIColor colorWithWhite:1 alpha:0.6];
 //   [animCircle animateWithDuration:3.0 completeBlock:^(int caromNum) {
 //     [animCircle removeFromSuperview];
 //     NSLog(@"连击了：%d",caromNum);  

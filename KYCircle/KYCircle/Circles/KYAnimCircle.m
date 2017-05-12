@@ -35,7 +35,6 @@
     UILabel *noteLabel;    //连发
     
     KYHollowCircle  *backCircle;     //背景
-    KYHollowCircle  *circleProgress; //创建进度
     
     KYAnimPerClickBlock _animPerClickBlock; //每次点击的回调 
     
@@ -96,20 +95,13 @@
   backCircle.center = self.center;
   backCircle.fillColor   = _fillColor;
   backCircle.strokeColor = _strokeColor;
+  backCircle.lineWidth = _lineWidth;
+  backCircle.lineCap = kCALineCapRound;
+  backCircle.strokeStart = 1;
   backCircle.strokeEnd   = 1;
-  backCircle.lineWidth = 0.1*self.bounds.size.width - 2;
   [self addSubview:backCircle];
   
-  
-  //创建进度
-  circleProgress = [[KYHollowCircle alloc] initWithFrame:frame lineWidth:_lineWidth];
-  circleProgress.center = self.center;
-  circleProgress.fillColor =  [UIColor whiteColor];
-  //指定path的渲染颜色
-  circleProgress.strokeColor  = _backgroundColor;
-  circleProgress.strokeEnd   = 1;
-  [self addSubview:circleProgress];
-  
+
   //点击的次数
   numerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (self.bounds.size.height - 40)/2, self.bounds.size.width, 20)];
   numerLabel.textColor = _strokeColor;
@@ -142,7 +134,7 @@
 -(void)animateWithDuration:(NSTimeInterval)duration completeBlock:(KYAnimCompleteBlock )block{
    
  
-  [self addAnimation:duration];
+ [self addAnimation:duration];
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         block([numerLabel.text intValue]);
@@ -171,7 +163,7 @@
  */
 -(void)addAnimation:(NSTimeInterval)duration{
   
-  CABasicAnimation *strokeEndAnimate = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+  CABasicAnimation *strokeEndAnimate = [CABasicAnimation animationWithKeyPath:@"strokeStart"];
   strokeEndAnimate.fromValue = [NSNumber numberWithFloat:0.0];
   strokeEndAnimate.toValue = [NSNumber numberWithFloat:1];
   
@@ -180,7 +172,7 @@
   strokeAnimateGroup.repeatCount = 1;
   strokeAnimateGroup.animations = @[strokeEndAnimate];
   
-  [[circleProgress  circleLayer] addAnimation:strokeAnimateGroup forKey:nil];
+  [[backCircle  circleLayer] addAnimation:strokeAnimateGroup forKey:nil];
   
 }
 
@@ -196,14 +188,13 @@
   
   _lineWidth = lineWidth;
   backCircle.lineWidth = _lineWidth;
-  circleProgress.lineWidth = _lineWidth;
 }
 
 -(void)setBackgroundColor:(UIColor *)backgroundColor{
   
   _backgroundColor = backgroundColor;
   animCircleBg.backgroundColor = _backgroundColor;
-  circleProgress.strokeColor  = _backgroundColor;
+
 }
 
 
