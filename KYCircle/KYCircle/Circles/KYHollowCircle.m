@@ -102,7 +102,7 @@
   _hollowCircleLayer.path = [_bezierPath CGPath];
   _hollowCircleLayer.strokeStart = _strokeStart;
   _hollowCircleLayer.strokeEnd   = _strokeEnd;
-  
+  self.layer.masksToBounds = YES;
   [self.layer addSublayer:_hollowCircleLayer];  
   
 }

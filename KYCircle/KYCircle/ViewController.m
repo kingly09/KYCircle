@@ -60,7 +60,7 @@
    _animViewBtn.frame = CGRectMake(40,220, 150, 150);
   [_animViewBtn adjustsImageWhenHighlighted];
   [_animViewBtn adjustsImageWhenDisabled];
-  _animViewBtn.backgroundColor = [UIColor blackColor];
+  _animViewBtn.backgroundColor = [UIColor grayColor];
   _animViewBtn.imageView.contentMode = UIViewContentModeCenter;
   [_animViewBtn addTarget:self action:@selector(onClickAnimViewBtn:) forControlEvents:UIControlEventTouchUpInside];
   [self.view addSubview:_animViewBtn];
@@ -116,6 +116,7 @@
 -(void)onClickAnimViewBtn:(UIButton *)sender{
    
    KYAnimCircle *animCircle = [[KYAnimCircle alloc] initWithFrame:sender.bounds];
+   animCircle.backgroundColor = [UIColor whiteColor];
    [animCircle animateWithDuration:3.0 completeBlock:^(int caromNum) {
      [animCircle removeFromSuperview];
      NSLog(@"连击了：%d",caromNum);  

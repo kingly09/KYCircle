@@ -58,7 +58,7 @@
 -(instancetype)initWithFrame:(CGRect)frame lineWidth:(float)lineWidth{
   self = [super initWithFrame:frame];
   if (self) {
-    
+    [self customView];
     [self setupAnimCircleWithlineWidth:lineWidth];
    
   }
@@ -94,8 +94,8 @@
   backCircle.center = self.center;
   backCircle.fillColor   = _fillColor;
   backCircle.strokeColor = _strokeColor;
-  backCircle.lineCap = kCALineCapRound;
   backCircle.strokeEnd   = 1;
+  backCircle.lineWidth = 0.1*self.bounds.size.width - 2;
   [self addSubview:backCircle];
   
   
@@ -105,7 +105,6 @@
   circleProgress.fillColor =  [UIColor whiteColor];
   //指定path的渲染颜色
   circleProgress.strokeColor  = _backgroundColor;
-  circleProgress.lineCap = kCALineCapRound;
   circleProgress.strokeEnd   = 1;
   [self addSubview:circleProgress];
   
@@ -140,8 +139,7 @@
 
 -(void)animateWithDuration:(NSTimeInterval)duration completeBlock:(KYAnimCompleteBlock )block{
    
-  [self customView];
-  
+ 
   [self addAnimation:duration];
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -183,7 +181,12 @@
   circleProgress.lineWidth = _lineWidth;
 }
 
-
+-(void)setBackgroundColor:(UIColor *)backgroundColor{
+  
+  _backgroundColor = backgroundColor;
+  animCircleBg.backgroundColor = _backgroundColor;
+  circleProgress.strokeColor  = _backgroundColor;
+}
 
 
 
