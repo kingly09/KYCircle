@@ -116,10 +116,9 @@
 -(void)onClickAnimViewBtn:(UIButton *)sender{
    
    KYAnimCircle *animCircle = [[KYAnimCircle alloc] initWithFrame:sender.bounds];
-   animCircle.userInteractionEnabled = YES;
-   [animCircle animateWithDuration:3.0 completeBlock:^(BOOL finished) {
-       
-       NSLog(@"动画执行完成了");
+   [animCircle animateWithDuration:3.0 completeBlock:^(int caromNum) {
+     [animCircle removeFromSuperview];
+     NSLog(@"连击了：%d",caromNum);  
    }];
    [sender addSubview:animCircle];
 }

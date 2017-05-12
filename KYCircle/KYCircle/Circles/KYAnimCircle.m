@@ -37,8 +37,9 @@
     KYHollowCircle  *backCircle;     //背景
     KYHollowCircle  *circleProgress; //创建进度
     
-    
 }
+
+@property (strong, nonatomic) UIButton *caromBtn; //连击按钮
 @end
 
 @implementation KYAnimCircle
@@ -83,10 +84,6 @@
   
   animCircleBg = [[UIView alloc] initWithFrame:self.bounds];
   animCircleBg.backgroundColor = _backgroundColor;
-  animCircleBg.userInteractionEnabled = YES;
-  UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(animCircleBgSingleTap)];
-  singleTap.numberOfTapsRequired = 1; // 单击
-  [animCircleBg addGestureRecognizer:singleTap];
   [self addSubview:animCircleBg];
   
   
@@ -97,6 +94,7 @@
   backCircle.center = self.center;
   backCircle.fillColor   = _fillColor;
   backCircle.strokeColor = _strokeColor;
+  backCircle.lineCap = kCALineCapRound;
   backCircle.strokeEnd   = 1;
   [self addSubview:backCircle];
   
@@ -104,12 +102,11 @@
   //创建进度
   circleProgress = [[KYHollowCircle alloc] initWithFrame:frame lineWidth:_lineWidth];
   circleProgress.center = self.center;
-  circleProgress.fillColor =  [UIColor clearColor];
+  circleProgress.fillColor =  [UIColor whiteColor];
   //指定path的渲染颜色
   circleProgress.strokeColor  = _backgroundColor;
   circleProgress.lineCap = kCALineCapRound;
-  circleProgress.strokeStart = 0;
-  circleProgress.strokeEnd   = 0;
+  circleProgress.strokeEnd   = 1;
   [self addSubview:circleProgress];
   
   //点击的次数
@@ -129,19 +126,27 @@
   noteLabel.text = @"连发";
   [self addSubview:noteLabel];  
   
+  //连击
+  _caromBtn  = [UIButton buttonWithType:UIButtonTypeCustom];
+   _caromBtn.frame = CGRectMake(0,0, self.frame.size.width, self.frame.size.height);
+  [_caromBtn adjustsImageWhenHighlighted];
+  [_caromBtn adjustsImageWhenDisabled];
+  _caromBtn.backgroundColor = [UIColor clearColor];
+  _caromBtn.imageView.contentMode = UIViewContentModeCenter;
+  [_caromBtn addTarget:self action:@selector(onClickCaromBtnView:) forControlEvents:UIControlEventTouchUpInside];
+   [self addSubview:_caromBtn]; 
  
 }
 
 -(void)animateWithDuration:(NSTimeInterval)duration completeBlock:(KYAnimCompleteBlock )block{
    
   [self customView];
+  
   [self addAnimation:duration];
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-       
+        block([numerLabel.text intValue]);
        [self removeFromSuperview];
-
-       block(YES);
   });
  
 }
@@ -164,7 +169,7 @@
   
 }
 
--(void)animCircleBgSingleTap{
+-(void)onClickCaromBtnView:(UIButton *)sender{
   
    numerLabel.text = [NSString stringWithFormat:@"%d",[numerLabel.text intValue] +1];
   
