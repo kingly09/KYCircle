@@ -37,6 +37,8 @@
     KYHollowCircle  *backCircle;     //背景
     KYHollowCircle  *circleProgress; //创建进度
     
+    KYAnimPerClickBlock _animPerClickBlock; //每次点击的回调 
+    
 }
 
 @property (strong, nonatomic) UIButton *caromBtn; //连击按钮
@@ -149,6 +151,21 @@
  
 }
 
+-(void)animateWithDuration:(NSTimeInterval)duration completeBlock:(KYAnimCompleteBlock )block withPerClickBlock:(KYAnimPerClickBlock )animPerClickBlock{
+   
+    _animPerClickBlock = animPerClickBlock;
+    
+    _animPerClickBlock([numerLabel.text intValue]);
+    
+    [self addAnimation:duration];
+  
+     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        block([numerLabel.text intValue]);
+       [self removeFromSuperview];
+   });
+}
+
+
 /**
  添加进度条动画
  */
@@ -170,7 +187,8 @@
 -(void)onClickCaromBtnView:(UIButton *)sender{
   
    numerLabel.text = [NSString stringWithFormat:@"%d",[numerLabel.text intValue] +1];
-  
+   
+   _animPerClickBlock([numerLabel.text intValue]);
 }
 
 #pragma mark - 对外的方法
@@ -187,6 +205,8 @@
   animCircleBg.backgroundColor = _backgroundColor;
   circleProgress.strokeColor  = _backgroundColor;
 }
+
+
 
 
 

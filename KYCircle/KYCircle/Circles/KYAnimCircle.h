@@ -30,7 +30,8 @@
 #define KY_RGB16(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 #define KY_RGBA16(rgbaValue) [UIColor colorWithRed:((float)((rgbaValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbaValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbaValue & 0xFF))/255.0 alpha:((float)((rgbaValue & 0xFF000000) >> 24))/255.0]
 
-typedef void(^KYAnimCompleteBlock)(int caromNum);
+typedef void(^KYAnimCompleteBlock)(int caromNum); //点击完成了
+typedef void(^KYAnimPerClickBlock)(int caromNum); //每次点击的回调
 
 @interface KYAnimCircle : UIView
 
@@ -62,6 +63,14 @@ typedef void(^KYAnimCompleteBlock)(int caromNum);
  */
 -(void)animateWithDuration:(NSTimeInterval)duration completeBlock:(KYAnimCompleteBlock )block;
 
+/**
+ 设置动画的时间，以及动画结束后的回调,每次点击的回调
+
+ @param duration 动画执行时间
+ @param block 动画执行完成后的回调
+ @param animPerClickBlock 每次点击的回调
+ */
+-(void)animateWithDuration:(NSTimeInterval)duration completeBlock:(KYAnimCompleteBlock )block withPerClickBlock:(KYAnimPerClickBlock )animPerClickBlock;
 
 
 @end

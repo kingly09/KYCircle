@@ -117,10 +117,20 @@
    
    KYAnimCircle *animCircle = [[KYAnimCircle alloc] initWithFrame:sender.bounds];
    animCircle.backgroundColor = [UIColor whiteColor];
-   [animCircle animateWithDuration:3.0 completeBlock:^(int caromNum) {
-     [animCircle removeFromSuperview];
-     NSLog(@"连击了：%d",caromNum);  
-   }];
+//   [animCircle animateWithDuration:3.0 completeBlock:^(int caromNum) {
+//     [animCircle removeFromSuperview];
+//     NSLog(@"连击了：%d",caromNum);  
+//   }];
+  
+  [animCircle animateWithDuration:3.0 completeBlock:^(int caromNum) {
+      [animCircle removeFromSuperview];
+      NSLog(@"连击了：%d",caromNum);  
+  } withPerClickBlock:^(int caromNum) {
+     
+      NSLog(@"第%d次连击了",caromNum);  
+     
+  }];
+
    [sender addSubview:animCircle];
 }
 
